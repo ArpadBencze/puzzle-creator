@@ -1,6 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
 import './App.scss';
 import DragAndDrop from './DragAndDrop';
+import Canvases from './Canvases';
 import styled from 'styled-components';
 
 const ImageWrapper = styled.div`
@@ -26,6 +27,8 @@ const App = () => {
           ...state,
           previewUrl: window.URL.createObjectURL(action.file),
         };
+      case 'REMOVE_FILE':
+        return { ...state, file: undefined, previewUrl: undefined };
       default:
         return state;
     }
@@ -38,6 +41,35 @@ const App = () => {
     previewUrl: undefined,
   });
 
+  const imageReducer = (state, action) => {
+    switch (action.type) {
+      case 'SET_DIMENSIONS':
+        return { ...state, width: action.width, height: action.height };
+      default:
+        return state;
+    }
+  };
+
+  const [imageDimensions, dispatchImage] = useReducer(imageReducer, {
+    width: undefined,
+    height: undefined,
+  });
+
+  const removeImage = () => {
+    if (data.file) {
+      dispatch({ type: 'REMOVE_FILE' });
+    }
+  };
+
+  const onImageLoad = (e) => {
+    const image = e.target;
+    dispatchImage({
+      type: 'SET_DIMENSIONS',
+      width: image.offsetWidth,
+      height: image.offsetHeight,
+    });
+  };
+
   useEffect(() => {
     if (data.previewUrl) {
       URL.revokeObjectURL(data.file);
@@ -48,13 +80,29 @@ const App = () => {
     <div className="App">
       <h1>React drag-and-drop component</h1>
       <DragAndDrop data={data} dispatch={dispatch} />
+      <button onClick={removeImage}>Remove image</button>
       <ol className="dropped-files">
         {data.file && <li>{data.file.name}</li>}
       </ol>
       {data.previewUrl && (
         <ImageWrapper>
-          <img src={data.previewUrl} alt={data.file.name} />
+          <img
+            onLoad={onImageLoad}
+            src={data.previewUrl}
+            alt={data.file.name}
+            id="image"
+          />
         </ImageWrapper>
+      )}
+
+      {data.previewUrl && (
+        <>
+          <h2>Aaaand the image cut:</h2>
+          <Canvases
+            imageUrl={data.previewUrl}
+            imageDimensions={imageDimensions}
+          />
+        </>
       )}
     </div>
   );

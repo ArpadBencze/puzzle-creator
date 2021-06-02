@@ -6,12 +6,12 @@ import styled from 'styled-components';
 
 const ImageWrapper = styled.div`
   max-width: 500px;
-
   > img {
     max-width: 100%;
     height: auto;
   }
 `;
+
 const Images = styled.div`
   display: flex;
   justify-content: space-around;
@@ -39,13 +39,6 @@ const App = () => {
     }
   };
 
-  const [data, dispatch] = useReducer(reducer, {
-    dropDepth: 0,
-    inDropZone: false,
-    file: undefined,
-    previewUrl: undefined,
-  });
-
   const imageReducer = (state, action) => {
     switch (action.type) {
       case 'SET_DIMENSIONS':
@@ -54,6 +47,13 @@ const App = () => {
         return state;
     }
   };
+
+  const [data, dispatch] = useReducer(reducer, {
+    dropDepth: 0,
+    inDropZone: false,
+    file: undefined,
+    previewUrl: undefined,
+  });
 
   const [imageDimensions, dispatchImage] = useReducer(imageReducer, {
     width: undefined,
@@ -86,7 +86,6 @@ const App = () => {
       <h1>React drag-and-drop component</h1>
       <DragAndDrop data={data} dispatch={dispatch} />
       <button onClick={removeImage}>Remove image</button>
-
       <Images>
         {data.previewUrl && (
           <ImageWrapper>
@@ -101,7 +100,7 @@ const App = () => {
         )}
         {data.previewUrl && (
           <div>
-            <h2>Aaaand the image cut:</h2>
+            <h2>Preview of the pieces:</h2>
             <Canvases
               imageUrl={data.previewUrl}
               imageDimensions={imageDimensions}

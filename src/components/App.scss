@@ -1,4 +1,7 @@
 .App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 2rem;
   text-align: center;
 }
@@ -11,6 +14,8 @@ h1 {
   background: rgb(149, 158, 168);
   border-radius: 0.5rem;
   box-shadow: 5px 5px 10px #C0C0C0;
+  width: 100%;
+  max-width: 500px;
 
   &:hover {
     background: rgb(86, 170, 113);
@@ -23,7 +28,7 @@ h1 {
   opacity: 0.7;
   background: rgb(86, 170, 113);
 }
-.dropped-files li {
+.dropped-files {
   color: #07F;
   padding: 3px;
   text-align: left;

@@ -5,12 +5,17 @@ import Canvases from './Canvases';
 import styled from 'styled-components';
 
 const ImageWrapper = styled.div`
-  max-width: 100%;
+  max-width: 500px;
 
   > img {
     max-width: 100%;
     height: auto;
   }
+`;
+const Images = styled.div`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 `;
 
 const App = () => {
@@ -81,29 +86,29 @@ const App = () => {
       <h1>React drag-and-drop component</h1>
       <DragAndDrop data={data} dispatch={dispatch} />
       <button onClick={removeImage}>Remove image</button>
-      <ol className="dropped-files">
-        {data.file && <li>{data.file.name}</li>}
-      </ol>
-      {data.previewUrl && (
-        <ImageWrapper>
-          <img
-            onLoad={onImageLoad}
-            src={data.previewUrl}
-            alt={data.file.name}
-            id="image"
-          />
-        </ImageWrapper>
-      )}
 
-      {data.previewUrl && (
-        <>
-          <h2>Aaaand the image cut:</h2>
-          <Canvases
-            imageUrl={data.previewUrl}
-            imageDimensions={imageDimensions}
-          />
-        </>
-      )}
+      <Images>
+        {data.previewUrl && (
+          <ImageWrapper>
+            <h2>{data.file && data.file.name}</h2>
+            <img
+              onLoad={onImageLoad}
+              src={data.previewUrl}
+              alt={data.file.name}
+              id="image"
+            />
+          </ImageWrapper>
+        )}
+        {data.previewUrl && (
+          <div>
+            <h2>Aaaand the image cut:</h2>
+            <Canvases
+              imageUrl={data.previewUrl}
+              imageDimensions={imageDimensions}
+            />
+          </div>
+        )}
+      </Images>
     </div>
   );
 };

@@ -57,8 +57,8 @@ const Canvases = ({ imageUrl, imageDimensions }) => {
           y * heightOfOnePiece,
           widthOfOnePiece,
           heightOfOnePiece,
-          (x * (widthOfOnePiece + 5)) / scaleX,
-          (y * (heightOfOnePiece + 5)) / scaleY,
+          (x * (widthOfOnePiece + 10)) / scaleX,
+          (y * (heightOfOnePiece + 10)) / scaleY,
           widthOfOnePiece / scaleX,
           heightOfOnePiece / scaleY
         );

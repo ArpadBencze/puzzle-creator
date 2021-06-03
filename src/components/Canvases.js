@@ -23,6 +23,7 @@ const Canvases = ({ imageUrl, imageDimensions }) => {
     width: 2,
     height: 2,
   });
+  const [previewHasBeenShown, setpreviewHasBeenShown] = useState(false);
   const canvasRef = useRef(null);
   const divRef = useRef(null);
 
@@ -103,6 +104,8 @@ const Canvases = ({ imageUrl, imageDimensions }) => {
   };
 
   const preview = () => {
+    if (!previewHasBeenShown) setpreviewHasBeenShown(true);
+
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
     if (imageUrl) {
@@ -129,9 +132,32 @@ const Canvases = ({ imageUrl, imageDimensions }) => {
     }
   };
 
-  // useEffect(() => {
-  //   draw();
-  // }, [imageUrl, imageDimensions, imagePieceNumbers]);
+  const handlePieceNumberChange = (e) => {
+    const newValue = e.target.value;
+
+    switch (e.target.name) {
+      case 'width':
+        setimagePieceDimensions({
+          ...imagePieceNumbers,
+          width: newValue,
+        });
+        break;
+      case 'height':
+        setimagePieceDimensions({
+          ...imagePieceNumbers,
+          height: newValue,
+        });
+        break;
+      default:
+        return;
+    }
+  };
+
+  useEffect(() => {
+    if (previewHasBeenShown) {
+      preview();
+    }
+  }, [imagePieceNumbers]);
 
   return (
     <div>
@@ -145,12 +171,8 @@ const Canvases = ({ imageUrl, imageDimensions }) => {
             <input
               type="number"
               value={imagePieceNumbers.width}
-              onChange={(e) =>
-                setimagePieceDimensions({
-                  ...imagePieceNumbers,
-                  width: e.target.value,
-                })
-              }
+              name="width"
+              onChange={handlePieceNumberChange}
             />
           </label>
           <label>
@@ -158,12 +180,8 @@ const Canvases = ({ imageUrl, imageDimensions }) => {
             <input
               type="number"
               value={imagePieceNumbers.height}
-              onChange={(e) =>
-                setimagePieceDimensions({
-                  ...imagePieceNumbers,
-                  height: e.target.value,
-                })
-              }
+              name="height"
+              onChange={handlePieceNumberChange}
             />
           </label>
         </Control>

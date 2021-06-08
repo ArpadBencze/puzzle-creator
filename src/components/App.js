@@ -1,7 +1,9 @@
 import React, { useReducer, useEffect } from 'react';
 import './App.scss';
 import DragAndDrop from './DragAndDrop';
-import Canvases from './Canvases';
+import Preview from './Preview';
+import JigsawWithShapes from './JigsawWithShapes';
+
 import styled from 'styled-components';
 
 const ImageWrapper = styled.div`
@@ -14,8 +16,17 @@ const ImageWrapper = styled.div`
 
 const Images = styled.div`
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+`;
+
+const PreviewContainer = styled.div`
+  max-width: 100%;
+`;
+
+const JigsawContainer = styled.div`
+  max-width: 80%;
 `;
 
 const App = () => {
@@ -83,31 +94,41 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>React drag-and-drop component</h1>
+      <h1>Crazy Jigsaw Puzzle Creator</h1>
       <DragAndDrop data={data} dispatch={dispatch} />
-      <button onClick={removeImage}>Remove image</button>
+      <button style={{ marginTop: '20px' }} onClick={removeImage}>
+        Remove image
+      </button>
       <Images>
         {data.previewUrl && (
-          <ImageWrapper>
-            <h2>{data.file && data.file.name}</h2>
-            <img
-              onLoad={onImageLoad}
-              src={data.previewUrl}
-              alt={data.file.name}
-              id="image"
-            />
-          </ImageWrapper>
-        )}
-        {data.previewUrl && (
-          <div>
-            <h2>Preview of the pieces:</h2>
-            <Canvases
-              imageUrl={data.previewUrl}
-              imageDimensions={imageDimensions}
-            />
-          </div>
+          <>
+            <ImageWrapper>
+              <h2>{data.file && data.file.name}</h2>
+              <img
+                onLoad={onImageLoad}
+                src={data.previewUrl}
+                alt={data.file.name}
+                id="image"
+              />
+            </ImageWrapper>
+            <PreviewContainer>
+              <h2>Preview of the pieces:</h2>
+              <Preview
+                imageUrl={data.previewUrl}
+                imageDimensions={imageDimensions}
+              />
+            </PreviewContainer>
+          </>
         )}
       </Images>
+      {data.previewUrl && (
+        <JigsawContainer>
+          <JigsawWithShapes
+            imageUrl={data.previewUrl}
+            imageDimensions={imageDimensions}
+          />
+        </JigsawContainer>
+      )}
     </div>
   );
 };
